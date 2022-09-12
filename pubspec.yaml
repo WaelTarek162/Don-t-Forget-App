@@ -1,0 +1,60 @@
+name: donforget
+description: A new Flutter project.
+
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+
+dependencies:
+  get: ^4.6.5
+  flutter_local_notifications: ^9.9.1
+  flutter_native_timezone: ^2.0.0
+  intl: ^0.17.0
+  google_fonts: ^3.0.1
+  date_picker_timeline: ^1.2.3
+  flutter_staggered_animations: ^1.1.1
+  flutter_svg: ^1.1.4
+  rxdart: ^0.27.5
+  sqflite:
+  get_storage:
+
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.10.0
+  flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/bestcon.jpg"
+  web:
+    generate: true
+    image_path: "images/bestcon.jpg"
+    background_color: "#hexcode"
+    theme_color: "#FF0000"
+    windows:
+      generate: true
+      image_path: "images/bestcon.jpg"
+      icon_size: 48
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/person.jpeg
+    - images/task.svg
