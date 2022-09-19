@@ -46,10 +46,10 @@ flutter_icons:
     image_path: "images/bestcon.jpg"
     background_color: "#hexcode"
     theme_color: "#FF0000"
-    windows:
-      generate: true
-      image_path: "images/bestcon.jpg"
-      icon_size: 48
+  windows:
+    generate: true
+    image_path: "images/bestcon.jpg"
+    icon_size: 48
 
 
 flutter:

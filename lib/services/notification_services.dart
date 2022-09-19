@@ -32,7 +32,7 @@ class NotifyHelper {
     );
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('bestIcon');
+    AndroidInitializationSettings('img');
 
     final InitializationSettings initializationSettings =
     InitializationSettings(

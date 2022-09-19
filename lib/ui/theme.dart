@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 
-const Color bluishClr = Color(0xFF4e5ae8);
-const Color orangeClr = Color(0xCFFF8746);
-const Color pinkClr = Color(0xFFff4667);
+const Color bluishClr = Color.fromRGBO(10,210,226,1);//Color(0xFF4e5ae8);
+const Color orangeClr = Color.fromRGBO(220,81,38,1);//Color(0xCFFF8746);
+const Color pinkClr = Color.fromRGBO(140, 32, 85, 1);//Color(0xFFff4667);
 const Color white = Colors.white;
 const primaryClr = bluishClr;
 const Color darkGreyClr = Color(0xFF121212);

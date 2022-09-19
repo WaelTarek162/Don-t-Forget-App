@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/svg.dart';
@@ -41,7 +42,6 @@ class _HomePageState extends State<HomePage> {
 
   final TaskController _taskController = Get.put(TaskController());
   DateTime _selected_date = DateTime.now();
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +88,16 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         backgroundColor: context.theme.backgroundColor,
         actions: [
-          IconButton(onPressed: (){
-            notifyHelper.cancelAllNotification();
-            _taskController.delete_Alltasks();
+          IconButton(
+              onPressed: () {
+                notifyHelper.cancelAllNotification();
+                _taskController.delete_Alltasks();
 
-            print(notifyHelper);
-            print(_taskController.taskList);
-            print('**************');
-          }, icon: Icon(Icons.clear_all_outlined)),
+                print(notifyHelper);
+                print(_taskController.taskList);
+                print('**************');
+              },
+              icon: Icon(Icons.clear_all_outlined,color: Get.isDarkMode?Colors.white:Colors.black,)),
           const CircleAvatar(
               backgroundImage: AssetImage('images/person.jpeg'), radius: 20),
           const SizedBox(
@@ -151,11 +153,11 @@ class _HomePageState extends State<HomePage> {
         width: 80,
         height: 120,
         dateTextStyle: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
-        dayTextStyle:const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w500, color: Colors.grey),
-        monthTextStyle:const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
+            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
+        dayTextStyle: const TextStyle(
+            fontSize: 20, fontWeight: FontWeight.w500, color: Colors.grey),
+        monthTextStyle: const TextStyle(
+            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
         selectionColor: primaryClr,
         deactivatedColor: Colors.white,
         selectedTextColor: Colors.white,
@@ -258,9 +260,6 @@ class _HomePageState extends State<HomePage> {
                     Get.back();
                   },
                   clr: primaryClr),
-              const SizedBox(
-                height: 20,
-              ),
             ],
           ),
         ),
@@ -280,7 +279,6 @@ class _HomePageState extends State<HomePage> {
           return Wrap(
               alignment: WrapAlignment.start,
               children: _taskController.taskList.map((task) {
-                
                 print(DateFormat('EEEE').format(_selected_date));
                 print(_selected_date);
 
@@ -308,8 +306,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-                }
-                else if(check_week(_selected_date, task.date!)&&task.repeat=='Weekly'){
+                } else if (check_week(_selected_date, task.date!) &&
+                    task.repeat == 'Weekly') {
                   String hour = task.startTime.toString().split(':')[0];
                   String minutes = task.startTime.toString().split(':')[1];
                   var date = DateFormat.jm().parse(task.startTime!);
@@ -332,9 +330,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-
-                }
-                else if(check_month(_selected_date, task.date!)&&task.repeat=='Monthly'){
+                } else if (check_month(_selected_date, task.date!) &&
+                    task.repeat == 'Monthly') {
                   String hour = task.startTime.toString().split(':')[0];
                   String minutes = task.startTime.toString().split(':')[1];
                   var date = DateFormat.jm().parse(task.startTime!);
@@ -357,100 +354,131 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-
                 }
-                else
-                  return Container(child: _noTaskMessage(true),);
+                //return Container();//Container(child: _noTaskMessage(true),);
+                else {
+                  print('----');
+                  print(task.date);
+                  print(_selected_date);
+               //   var date = _selected_date.toString().split('-');
+                  String d = DateFormat('yMd').format(_selected_date);
+
+                  bool have_data = false;
+                  int i = 0;
+                  for (var element in _taskController.taskList) {
+                    if (element.date == d) {
+                      print('here');
+                      print('${element.date}------$d');
+                      have_data = true;
+                      i++;
+                    }
+                  }
+                  if (i > 1) {
+                    return Container();
+                  }
+                  return have_data == true
+                      ? Container(
+                          child: _noTaskMessage(true),
+                        )
+                      : Container();
+                }
               }).toList());
         }
       }),
     );
   }
 
-  bool check_week(DateTime selected,String taskDate){
+  bool check_week(DateTime selected, String taskDate) {
+    var date = taskDate.split('/');
+    String day = date[1];
+    String mon = date[0];
+    String year = date[2];
+    if (day.length == 1) {
+      day = '0$day';
+    }
+    if (mon.length == 1) {
+      mon = '0$mon';
+    }
 
-    var date=taskDate.split('/');
-    String day=date[1];
-    String mon=date[0];
-    String year=date[2];
-    if(day.length==1){day='0$day';}
-    if(mon.length==1){mon='0$mon';}
+    String week_name_sel = DateFormat('EEEE').format((selected));
+    String week_name_taskd = DateFormat('EEEE')
+        .format(DateTime.parse('$year-$mon-$day 00:00:00.000'));
 
-    String week_name_sel=DateFormat('EEEE').format((selected));
-    String week_name_taskd=DateFormat('EEEE').format(DateTime.parse('$year-$mon-$day 00:00:00.000'));
-
-
-    if(week_name_sel==week_name_taskd)
-      return true;
+    if (week_name_sel == week_name_taskd) return true;
 
     return false;
   }
-  bool check_month(DateTime selected,String taskDate){
 
-    var date=taskDate.split('/');
-    String day=date[1];
-    String mon=date[0];
-    String year=date[2];
-    if(day.length==1){day='0$day';}
-    if(mon.length==1){mon='0$mon';}
+  bool check_month(DateTime selected, String taskDate) {
+    var date = taskDate.split('/');
+    String day = date[1];
+    String mon = date[0];
+    String year = date[2];
+    if (day.length == 1) {
+      day = '0$day';
+    }
+    if (mon.length == 1) {
+      mon = '0$mon';
+    }
 
-    String mon_sel=DateFormat.d().format((selected));
-    String mon_taskd=DateFormat.d().format(DateTime.parse('$year-$mon-$day 00:00:00.000'));
+    String mon_sel = DateFormat.d().format((selected));
+    String mon_taskd =
+        DateFormat.d().format(DateTime.parse('$year-$mon-$day 00:00:00.000'));
 
-print(mon_taskd);
-print(mon_sel);
-    if(mon_sel==mon_taskd)
-      return true;
+    print(mon_taskd);
+    print(mon_sel);
+    if (mon_sel == mon_taskd) return true;
 
     return false;
   }
 
   _noTaskMessage(bool still_data) {
-    
-    if(still_data){
-
+    if (still_data) {
       return Stack(
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             child: SingleChildScrollView(
                 child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  alignment: WrapAlignment.center,
-                  direction: SizeConfig.orientation == Orientation.landscape
-                      ? Axis.horizontal
-                      : Axis.vertical,
-                  children: [
-                    SvgPicture.asset(
-                      'images/task.svg',
-                      height: 90,
-                      semanticsLabel: 'Task',
-                      color: Colors.greenAccent.withOpacity(0.6),
-                    ),
-                    SizeConfig.orientation == Orientation.landscape
-                        ? const SizedBox(
-                      height: 5,
-                    )
-                        : const SizedBox(
-                      height: 120,
-                    ),
-                    Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 0.8, vertical: 10),
-                        child: Text(
-                          'No Tasks for This Day!',
-                          style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Get.isDarkMode?Colors.white:Colors.black),
-                          textAlign: TextAlign.center,
-                        )),
-                    SizeConfig.orientation == Orientation.landscape
-                        ? const SizedBox(
-                      height: 5,
-                    )
-                        : const SizedBox(
-                      height: 120,
-                    ),
-                  ],
-                )),
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
+              direction: SizeConfig.orientation == Orientation.landscape
+                  ? Axis.horizontal
+                  : Axis.vertical,
+              children: [
+                SvgPicture.asset(
+                  'images/task.svg',
+                  height: 90,
+                  semanticsLabel: 'Task',
+                  color: Colors.greenAccent.withOpacity(0.6),
+                ),
+                SizeConfig.orientation == Orientation.landscape
+                    ? const SizedBox(
+                        height: 5,
+                      )
+                    : const SizedBox(
+                        height: 120,
+                      ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 0.8, vertical: 10),
+                    child: Text(
+                      'No Tasks for This Day!',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Get.isDarkMode ? Colors.white : Colors.black),
+                      textAlign: TextAlign.center,
+                    )),
+                SizeConfig.orientation == Orientation.landscape
+                    ? const SizedBox(
+                        height: 5,
+                      )
+                    : const SizedBox(
+                        height: 120,
+                      ),
+              ],
+            )),
           ),
         ],
       );
@@ -501,7 +529,4 @@ print(mon_sel);
       ],
     );
   }
-
-
-
 }
